@@ -1,36 +1,37 @@
-const express = require("express");
-const app = express();
-const path = require("path");
-const favicon = require("serve-favicon");
-const logger = require("morgan");
-const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
-const index = require("./routes/index");
-const passport = require("passport");
-require("dotenv").config();
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const index = require('./api/routes/index');
+const passport = require('passport');
 
-require("./configs/dbSetup")();
-require("./configs/passport");
+const app = express();
+require('dotenv').config();
+
+require('./api/configs/dbSetup')();
+require('./api/configs/passport');
+
 app.use(passport.initialize());
 
-// dbSetup();
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger("dev"));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/api", index);
+app.use('/api', index);
 
 // catch 404 and forward to error handler1
 app.use((req, res, next) => {
-  const err = new Error("Not Found");
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -39,11 +40,11 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render('error');
 });
 
 module.exports = app;

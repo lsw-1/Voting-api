@@ -1,5 +1,5 @@
-const passport = require('passport');
-const User = require('../models/User');
+const passport = require("passport");
+const User = require("../models/User");
 
 exports.register = async (req, res) => {
   try {
@@ -13,15 +13,15 @@ exports.register = async (req, res) => {
     const token = user.generateJwt();
     res.status(200);
     res.json({
-      token,
+      token
     });
   } catch (err) {
-    console.log('error');
+    console.log("error");
   }
 };
 
 exports.login = async (req, res) => {
-  passport.authenticate('local', function(err, user, info) {
+  passport.authenticate("local", function(err, user, info) {
     // If Passport throws/catches an error
     if (err) {
       res.status(404).json(err);
@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
       const token = user.generateJwt();
       res.status(200);
       res.json({
-        token: token,
+        token: token
       });
     } else {
       // If user is not found

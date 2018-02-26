@@ -1,63 +1,45 @@
-const User = require("../models/User");
-exports.signup = (req, res) => {
-  if (
-    req.body.email &&
-    req.body.username &&
-    req.body.password &&
-    req.body.passwordConf
-  ) {
-    const userData = {
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      passwordConf: req.body.passwordConf
-    };
+const passport = require('passport');
+const User = require('../models/User');
 
-    //use schema.create to insert data into the db
-    User.create(userData, function(err, user) {
-      if (err) {
-        return next(err);
-      } else {
-        return res.redirect("/");
-      }
+exports.register = async (req, res) => {
+  try {
+    const user = new User();
+    user.name = req.body.name;
+    user.email = req.body.email;
+
+    user.setPassword(req.body.password);
+
+    await user.save();
+    const token = user.generateJwt();
+    res.status(200);
+    res.json({
+      token,
     });
+  } catch (err) {
+    console.log('error');
   }
 };
 
-exports.login = (req, res) => {
-  if (
-    req.body.email &&
-    req.body.username &&
-    req.body.password &&
-    req.body.passwordConf
-  ) {
-    const userData = {
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      passwordConf: req.body.passwordConf
-    };
+exports.login = async (req, res) => {
+  passport.authenticate('local', function(err, user, info) {
+    // If Passport throws/catches an error
+    if (err) {
+      res.status(404).json(err);
+      return;
+    }
 
-    //use schema.create to insert data into the db
-    User.create(userData, function(err, user) {
-      if (err) {
-        return next(err);
-      } else {
-        return res.redirect("/");
-      }
-    });
-  }
+    // If a user is found
+    if (user) {
+      const token = user.generateJwt();
+      res.status(200);
+      res.json({
+        token: token,
+      });
+    } else {
+      // If user is not found
+      res.status(401).json(info);
+    }
+  })(req, res);
 };
 
-exports.logout = (req, res) => {
-  if (req.session) {
-    // delete session object
-    req.session.destroy(err => {
-      if (err) {
-        return next(err);
-      } else {
-        return res.redirect("/");
-      }
-    });
-  }
-};
+exports.logout = (req, res) => {};

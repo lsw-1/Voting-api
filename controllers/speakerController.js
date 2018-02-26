@@ -1,4 +1,4 @@
-const SpeakerEntity = require("../models/Speaker");
+const SpeakerEntity = require('../models/Speaker');
 
 exports.getAll = async (req, res) => {
   const speakers = await SpeakerEntity.find();
@@ -7,7 +7,7 @@ exports.getAll = async (req, res) => {
 
 exports.getOne = async (req, res) => {
   const speaker = await SpeakerEntity.findOne({ _id: req.params.id })
-    .populate("votes")
+    .populate('votes')
     .exec();
   return res.json(speaker);
 };
@@ -16,7 +16,7 @@ exports.createSpeaker = async (req, res) => {
   const newSpeaker = new SpeakerEntity({
     name: req.body.name,
     description: req.body.description,
-    created_at: new Date()
+    created_at: new Date(),
   });
   try {
     const speaker = await newSpeaker.save();
@@ -29,9 +29,7 @@ exports.createSpeaker = async (req, res) => {
 exports.countTotalVotes = async (req, res) => {
   const speakers = await SpeakerEntity.find();
 
-  const totalVotes = speakers.reduce(
-    (acc, curr) => curr.numVotes + acc.numVotes
-  );
+  const totalVotes = speakers.reduce((acc, curr) => curr.numVotes + acc.numVotes);
 
   return res.json({ totalVotes });
 };

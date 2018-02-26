@@ -1,23 +1,23 @@
-const VoteEntity = require("../models/Vote");
-const SpeakerEntity = require("../models/Speaker");
+const Vote = require('../models/Vote');
+const SpeakerEntity = require('../models/Speaker');
 
 exports.getAll = async (req, res) => {
-  const votes = await VoteEntity.find({ speaker: req.params.speakerId });
+  const votes = await Vote.find({ speaker: req.params.speakerId });
   return res.json(votes);
 };
 
 exports.getOne = async (req, res) => {
-  const vote = await VoteEntity.findOne({ _id: req.params.id })
-    .populate("votes")
+  const vote = await Vote.findOne({ _id: req.params.id })
+    .populate('votes')
     .exec();
   return res.json(vote);
 };
 
 exports.createVote = async (req, res) => {
-  const newVote = new VoteEntity({
+  const newVote = new Vote({
     ticket_number: req.body.ticketNumber,
     speaker: req.params.speakerId,
-    created_at: new Date()
+    created_at: new Date(),
   });
   try {
     const vote = await newVote.save();

@@ -1,0 +1,11 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "node": true,
+
+    "mongo": true
+  },
+  "rules": {
+    "no-underscore-dangle": "off"
+  }
+}

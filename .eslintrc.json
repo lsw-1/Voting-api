@@ -2,10 +2,12 @@
   "extends": "airbnb-base",
   "env": {
     "node": true,
-
-    "mongo": true
+    "mongo": true,
+    "mocha": true
   },
   "rules": {
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-console": 0,
+    "func-names": "off"
   }
 }

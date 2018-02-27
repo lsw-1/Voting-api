@@ -1,5 +1,3 @@
-#! /usr/bin/env node
-
 // Get arguments passed on command line
 const userArgs = process.argv.slice(2);
 if (!userArgs[0].startsWith('mongodb://')) {
@@ -25,13 +23,14 @@ const removeNumVotes = async () => {
     .remove();
 };
 
-const addVotesToSpeaker = async () => {
+const removeVotesWithoutSpeaker = async () => {
   const speakers = await Speaker.find();
-  const ids = speakers.map(s => s._id);
+  const nors = speakers.map(s => ({ speaker: s._id }));
+  await Vote.remove({ $nor: nors });
 };
 
 async.series(
-  [removeNumVotes],
+  [removeNumVotes, removeVotesWithoutSpeaker],
   // Optional callback
   (err, results) => {
     if (err) {

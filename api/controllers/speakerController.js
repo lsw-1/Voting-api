@@ -5,7 +5,7 @@ exports.getAll = async (req, res) => {
     const speakers = await Speaker.find();
     res.json(speakers);
   } catch (error) {
-    res.sendStatus(500);
+    res.status(500);
   }
 };
 
@@ -14,7 +14,7 @@ exports.getOne = async (req, res) => {
     const speaker = await Speaker.findOne({ _id: req.params.id });
     res.status(200).json(speaker);
   } catch (error) {
-    res.sendStatus(404);
+    res.status(404);
   }
 };
 
@@ -28,7 +28,7 @@ exports.createSpeaker = async (req, res) => {
     const speaker = await newSpeaker.save();
     res.json(speaker);
   } catch (error) {
-    res.sendStatus(400);
+    res.status(400);
   }
 };
 

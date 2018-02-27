@@ -4,11 +4,11 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const index = require('./api/routes/index');
 const passport = require('passport');
+require('dotenv').config();
 
 const app = express();
-require('dotenv').config();
+const index = require('./api/routes/index');
 
 require('./api/configs/dbSetup')();
 require('./api/configs/passport');

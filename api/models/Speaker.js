@@ -3,13 +3,16 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Speaker = new Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  numVotes: { type: Number, default: 0 },
+  name: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 50,
+  },
+  description: { type: String, required: true, maxlength: 500 },
+  votes: { type: [{ type: Schema.ObjectId, ref: 'Vote' }], select: false },
   created_at: Date,
 });
-
-Speaker.virtual('url').get(() => `/speakers/${this._id}`);
 
 const SpeakerModel = mongoose.model('Speaker', Speaker);
 

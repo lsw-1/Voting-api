@@ -1,35 +1,43 @@
-const SpeakerEntity = require('../models/Speaker');
+const Speaker = require('../models/Speaker');
 
 exports.getAll = async (req, res) => {
-  const speakers = await SpeakerEntity.find();
-  return res.json(speakers);
+  try {
+    const speakers = await Speaker.find();
+    res.json(speakers);
+  } catch (error) {
+    res.sendStatus(500);
+  }
 };
 
 exports.getOne = async (req, res) => {
-  const speaker = await SpeakerEntity.findOne({ _id: req.params.id })
-    .populate('votes')
-    .exec();
-  return res.json(speaker);
+  try {
+    const speaker = await Speaker.findOne({ _id: req.params.id });
+    res.status(200).json(speaker);
+  } catch (error) {
+    res.sendStatus(404);
+  }
 };
 
 exports.createSpeaker = async (req, res) => {
-  const newSpeaker = new SpeakerEntity({
-    name: req.body.name,
-    description: req.body.description,
-    created_at: new Date(),
-  });
   try {
+    const newSpeaker = new Speaker({
+      name: req.body.name,
+      description: req.body.description,
+      created_at: new Date(),
+    });
     const speaker = await newSpeaker.save();
-    return res.json(speaker);
-  } catch (err) {
-    console.log(err);
+    res.json(speaker);
+  } catch (error) {
+    res.sendStatus(400);
   }
 };
 
 exports.countTotalVotes = async (req, res) => {
-  const speakers = await SpeakerEntity.find();
-
-  const totalVotes = speakers.reduce((acc, curr) => curr.numVotes + acc.numVotes);
-
-  return res.json({ totalVotes });
+  try {
+    const speakers = await Speaker.find().select('+votes');
+    const totalVotes = speakers.reduce((acc, curr) => curr.votes.length + acc.votes.length);
+    res.json({ totalVotes });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };

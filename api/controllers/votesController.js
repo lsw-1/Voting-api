@@ -1,16 +1,24 @@
 const Vote = require('../models/Vote');
-const SpeakerEntity = require('../models/Speaker');
+const Speaker = require('../models/Speaker');
 
 exports.getAll = async (req, res) => {
-  const votes = await Vote.find({ speaker: req.params.speakerId });
-  return res.json(votes);
+  try {
+    const votes = await Vote.find({ speaker: req.params.speakerId });
+    res.json(votes);
+  } catch (error) {
+    res.send(error);
+  }
 };
 
 exports.getOne = async (req, res) => {
-  const vote = await Vote.findOne({ _id: req.params.id })
-    .populate('votes')
-    .exec();
-  return res.json(vote);
+  try {
+    const vote = await Vote.findOne({ _id: req.params.id })
+      .populate('votes')
+      .exec();
+    res.json(vote);
+  } catch (error) {
+    res.sendStatus(404);
+  }
 };
 
 exports.createVote = async (req, res) => {
@@ -21,11 +29,12 @@ exports.createVote = async (req, res) => {
   });
   try {
     const vote = await newVote.save();
-    const speaker = await SpeakerEntity.findOne({ _id: vote.speaker });
-    speaker.numVotes++;
+    const speaker = await Speaker.findOne({ _id: vote.speaker });
+    speaker.votes = [...speaker.votes, vote];
     await speaker.save();
-    return res.json(vote);
+    res.sendStatus(201);
+    res.json(vote);
   } catch (err) {
-    console.log(err);
+    res.sendStatus(400);
   }
 };

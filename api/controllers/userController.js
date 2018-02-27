@@ -1,5 +1,5 @@
-const passport = require("passport");
-const User = require("../models/User");
+const passport = require('passport');
+const User = require('../models/User');
 
 exports.register = async (req, res) => {
   try {
@@ -11,29 +11,26 @@ exports.register = async (req, res) => {
 
     await user.save();
     const token = user.generateJwt();
-    res.status(200);
     res.json({
-      token
+      token,
     });
   } catch (err) {
-    console.log("error");
+    res.sendStatus(400);
   }
 };
 
 exports.login = async (req, res) => {
-  passport.authenticate("local", function(err, user, info) {
+  passport.authenticate('local', (err, user, info) => {
     // If Passport throws/catches an error
     if (err) {
       res.status(404).json(err);
       return;
     }
-
     // If a user is found
     if (user) {
       const token = user.generateJwt();
-      res.status(200);
       res.json({
-        token: token
+        token,
       });
     } else {
       // If user is not found
@@ -41,5 +38,3 @@ exports.login = async (req, res) => {
     }
   })(req, res);
 };
-
-exports.logout = (req, res) => {};

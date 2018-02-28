@@ -4,11 +4,11 @@ const User = require('../models/User');
 
 module.exports = passport.use(new LocalStrategy(
   {
-    usernameField: 'email',
+    usernameField: 'name',
   },
   async (username, password, done) => {
     try {
-      const user = await User.findOne({ email: username });
+      const user = await User.findOne({ name: username });
       if (!user) {
         done(null, false, {
           message: 'user not found',

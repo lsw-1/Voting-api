@@ -1,15 +1,15 @@
 const Speaker = require('../models/Speaker');
 
-exports.getAll = async (req, res) => {
+const getAll = async (req, res) => {
   try {
     const speakers = await Speaker.find();
     res.json(speakers);
   } catch (error) {
-    res.status(500);
+    res.json(error);
   }
 };
 
-exports.getOne = async (req, res) => {
+const getOne = async (req, res) => {
   try {
     const speaker = await Speaker.findOne({ _id: req.params.id });
     res.status(200).json(speaker);
@@ -18,7 +18,7 @@ exports.getOne = async (req, res) => {
   }
 };
 
-exports.createSpeaker = async (req, res) => {
+const createSpeaker = async (req, res) => {
   try {
     const newSpeaker = new Speaker({
       name: req.body.name,
@@ -26,18 +26,25 @@ exports.createSpeaker = async (req, res) => {
       created_at: new Date(),
     });
     const speaker = await newSpeaker.save();
-    res.json(speaker);
+    res.status(201).json(speaker);
   } catch (error) {
     res.status(400);
   }
 };
 
-exports.countTotalVotes = async (req, res) => {
+const countTotalVotes = async (req, res) => {
   try {
     const speakers = await Speaker.find().select('+votes');
-    const totalVotes = speakers.reduce((acc, curr) => curr.votes.length + acc.votes.length);
+    const totalVotes = speakers.map(s => s.votes.length).reduce((acc, curr) => acc + curr);
     res.json({ totalVotes });
   } catch (error) {
-    res.status(500).json(error);
+    res.json(error).status(500);
   }
+};
+
+module.exports = {
+  getAll,
+  getOne,
+  createSpeaker,
+  countTotalVotes,
 };

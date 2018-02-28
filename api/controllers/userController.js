@@ -5,7 +5,6 @@ exports.register = async (req, res) => {
   try {
     const user = new User();
     user.name = req.body.name;
-    user.email = req.body.email;
 
     user.setPassword(req.body.password);
 
@@ -15,7 +14,7 @@ exports.register = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.sendStatus(400);
+    res.status(400).json(err);
   }
 };
 

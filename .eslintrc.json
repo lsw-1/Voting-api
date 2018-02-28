@@ -3,11 +3,11 @@
   "env": {
     "node": true,
     "mongo": true,
-    "mocha": true
+    "jest": true
   },
   "rules": {
     "no-underscore-dangle": "off",
-    "no-console": 0,
+    "no-console": "off",
     "func-names": "off"
   }
 }

@@ -12,12 +12,10 @@ exports.getAll = async (req, res) => {
 
 exports.getOne = async (req, res) => {
   try {
-    const vote = await Vote.findOne({ _id: req.params.id })
-      .populate('votes')
-      .exec();
+    const vote = await Vote.findOne({ _id: req.params.id });
     res.json(vote);
   } catch (error) {
-    res.sendStatus(404);
+    res.status(404);
   }
 };
 
@@ -29,12 +27,11 @@ exports.createVote = async (req, res) => {
   });
   try {
     const vote = await newVote.save();
-    const speaker = await Speaker.findOne({ _id: vote.speaker });
-    speaker.votes = [...speaker.votes, vote];
+    const speaker = await Speaker.findOne({ _id: vote.speaker }).select('+votes');
+    speaker.votes = [...speaker.votes, vote._id];
     await speaker.save();
-    res.sendStatus(201);
-    res.json(vote);
+    res.status(201).json(vote);
   } catch (err) {
-    res.sendStatus(400);
+    res.status(400).json(err);
   }
 };

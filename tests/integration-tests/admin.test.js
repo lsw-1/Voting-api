@@ -34,7 +34,7 @@ describe('authorization', () => {
     });
   });
 
-  it('should create a speaker', async () => {
+  it('should login and create a speaker', async () => {
     const loginRes = await request
       .post('/api/auth/login')
       .send({ name: 'test', password: '12345' });

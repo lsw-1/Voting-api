@@ -29,8 +29,15 @@
     "eslint": "^4.18.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.9.0",
+    "husky": "^0.15.0-rc.8",
     "jest": "^22.4.2",
     "nodemon": "^1.15.0",
     "supertest": "^3.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
   }
 }

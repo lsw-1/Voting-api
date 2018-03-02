@@ -3,6 +3,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Speaker = new Schema({
+  images: {
+    type: [String],
+  },
+  video: {
+    type: String,
+  },
   name: {
     type: String,
     required: true,

@@ -25,13 +25,4 @@ describe('Speaker routes', () => {
     expect(response.body.totalVotes).toBeTruthy();
     expect(response.body.totalVotes.toString()).toMatch(/[0-9]+/);
   });
-
-  // it('should create a speaker', async () => {
-  //   const response = await request
-  //     .post(ROOT_PATH)
-  //     .set('Content-Type', 'application/json')
-  //     .send({ name: 'test', description: 'test' });
-  //   expect(response.statusCode).toBe(201);
-  //   // expect(response.body.name).toMatch(/test/);
-  // });
 });

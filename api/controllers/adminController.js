@@ -17,6 +17,8 @@ const speakersWithVoteCount = async (req, res) => {
 const createSpeaker = async (req, res) => {
   try {
     const newSpeaker = new Speaker({
+      images: req.body.images,
+      video: req.body.video,
       name: req.body.name,
       description: req.body.description,
       created_at: new Date(),

@@ -8,6 +8,7 @@ const ROOT_PATH = '/api/speakers';
 describe('Speaker routes', () => {
   afterAll(async () => {
     await Speaker.remove({ name: 'test' });
+    request.app.close();
   });
 
   it('should return all speakers with valid fields on /speakers', async () => {

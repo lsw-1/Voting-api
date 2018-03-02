@@ -7,7 +7,7 @@ const User = require('../../api/models/User');
 describe('authorization', () => {
   afterAll(async () => {
     await User.remove({ name: 'test' });
-    request.app.close();
+    app.close();
   });
 
   it('should register a user and return a token', async () => {

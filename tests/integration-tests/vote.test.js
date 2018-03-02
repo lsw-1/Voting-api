@@ -17,7 +17,7 @@ describe('Vote routes', () => {
     await Speaker.remove({ name: 'vote-test' });
     await Vote.remove({ ticket_number: 123456 });
     await Vote.remove({ ticket_number: 555555555555 });
-    request.app.close();
+    app.close();
   });
 
   it('should create a vote for a speaker', async () => {
